@@ -1,5 +1,9 @@
 const store = require('./store');
 
+function getUsers(filterName) {
+  return store.getUsers(filterName);
+}
+
 function addUser(name) {
   if (!name) {
     console.error('[UserController] No hay nombre de usuario');
@@ -9,10 +13,6 @@ function addUser(name) {
     name,
   };
   return store.addUser(newUser);
-}
-
-function getUsers(filterName) {
-  return store.getUsers(filterName);
 }
 
 function updateUser(id, name) {

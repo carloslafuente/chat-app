@@ -26,12 +26,14 @@ export class MessageListComponent implements OnInit {
     });
   }
 
-  getAllMessages() {
-    this.messagesService
-      .getAllChatMessages(this.chatId)
-      .subscribe((messages) => {
-        this.messages = messages.body;
-      });
+  async getAllMessages() {
+    // this.messagesService.getAllChatMessages(this.chatId).subscribe((data) => {
+    //   console.log(JSON.parse(data));
+    //   this.messages = JSON.parse(data).body;
+    // });
+    const messages = await this.messagesService.getAllChatMessages(this.chatId);
+    console.log(JSON.parse(messages));
+    this.messages = JSON.parse(messages).body;
   }
 
   sendNewMessage() {
@@ -44,7 +46,7 @@ export class MessageListComponent implements OnInit {
           chat: this.chatId,
           user: this.userId,
         })
-        .subscribe((data) => {
+        .then((data) => {
           this.getAllMessages();
           this.clearInputMessage();
         });
