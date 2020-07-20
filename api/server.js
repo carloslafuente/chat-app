@@ -32,8 +32,15 @@ router(app);
 app.use(config.publicRoute, express.static('public'));
 
 // Iniciamos el servidor http
-app.listen(config.port, () => {
-  console.log(
-    `La aplicacion esta escuchando en: ${config.host}:${config.port}`
-  );
+server.listen(config.port, () => {
+	// socket.socket.io.on('connection', (client) => {
+	//   console.log(`Un cliente se ha conectado ${client.id}`);
+
+	//   client.on('disconnect', () => {
+	//     console.log(`Un cliente se ha desconectado ${client.id}`);
+	//   });
+	// });
+	console.log(
+		`La aplicacion esta escuchando en: ${config.host}:${config.port}`
+	);
 });

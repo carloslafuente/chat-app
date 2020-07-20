@@ -11,8 +11,8 @@ export class ChatComponent implements OnInit {
   constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
-    this.usersService.getAllUsers().subscribe((users) => {
-      this.users = users.body;
+    this.usersService.getAllUsers().subscribe((data) => {
+      this.users = JSON.parse(data).body;
     });
   }
 }
