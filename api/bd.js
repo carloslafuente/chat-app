@@ -5,7 +5,6 @@ db.Promise = global.Promise;
 
 // Funcion asincrona que conecta a la base de datos
 async function connect(uri) {
-	console.log(uri);
 	await db.connect(uri, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,

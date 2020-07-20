@@ -12,7 +12,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.usersService.getAllUsers().subscribe((data) => {
-      this.users = JSON.parse(data).body;
+      this.users = data.body;
     });
   }
 }

@@ -12,8 +12,6 @@ export class UsersService {
   constructor(private http: HttpClient, private socket: Socket) {}
 
   getAllUsers(): Observable<any> {
-    // return this.http.get(`${environment.api}/user`);
-    this.socket.emit('getUsers');
-    return this.socket.fromEvent<any>('getUsers').pipe(map((data) => data));
+    return this.http.get(`${environment.api}/user`);
   }
 }

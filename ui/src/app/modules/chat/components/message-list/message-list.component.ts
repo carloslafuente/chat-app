@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessagesService } from 'src/app/shared/services/messages.service';
 import { Message } from 'src/app/shared/models/message.model';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-message-list',
@@ -15,7 +16,8 @@ export class MessageListComponent implements OnInit {
   newMessage = '';
   constructor(
     private route: ActivatedRoute,
-    private messagesService: MessagesService
+    private messagesService: MessagesService,
+    private socket: Socket
   ) {}
 
   ngOnInit(): void {
@@ -24,16 +26,22 @@ export class MessageListComponent implements OnInit {
       this.userId = params.get('idUser');
       this.getAllMessages();
     });
+    this.socket.on('messages', (data) => {
+      if (data.body[0].chat !== this.chatId) {
+        console.log('NO HAY MENSAJES NUEVOS PARA TU CHAT');
+      } else {
+        console.log('REFRESCAR MENSAJES');
+        this.messages = data.body;
+      }
+      this.getAllMessages();
+    });
   }
 
   async getAllMessages() {
-    // this.messagesService.getAllChatMessages(this.chatId).subscribe((data) => {
-    //   console.log(JSON.parse(data));
-    //   this.messages = JSON.parse(data).body;
-    // });
-    const messages = await this.messagesService.getAllChatMessages(this.chatId);
-    console.log(JSON.parse(messages));
-    this.messages = JSON.parse(messages).body;
+    this.messagesService.getAllChatMessages(this.chatId).subscribe((data) => {
+      console.log(data);
+      this.messages = data.body;
+    });
   }
 
   sendNewMessage() {
@@ -46,7 +54,15 @@ export class MessageListComponent implements OnInit {
           chat: this.chatId,
           user: this.userId,
         })
-        .then((data) => {
+        .subscribe((data) => {
+          this.socket.emit('getMessages', this.chatId, (result) => {
+            if (result.body[0].chat !== this.chatId) {
+              console.log('NO HAY MENSAJES NUEVOS PARA TU CHATID');
+            } else {
+              console.log('REFRESCAR MENSAJES');
+              this.messages = result.body;
+            }
+          });
           this.getAllMessages();
           this.clearInputMessage();
         });
