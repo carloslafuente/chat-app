@@ -32,7 +32,7 @@ router(app);
 app.use(config.publicRoute, express.static('public'));
 
 // Iniciamos el servidor http
-server.listen(config.port, () => {
+app.listen(config.port, () => {
   console.log(
     `La aplicacion esta escuchando en: ${config.host}:${config.port}`
   );
